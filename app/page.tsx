@@ -82,14 +82,11 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-neutral-50 text-neutral-900">
+    <main className="min-h-screen bg-[#f4f5f5] text-[#1f2328]">
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 py-8 sm:px-8 lg:px-10">
-        <header className="flex flex-col gap-4 border-b border-neutral-200 pb-6 md:flex-row md:items-end md:justify-between">
+        <header className="flex flex-col gap-4 border-b border-[#d8dcdf] pb-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-neutral-500">
-              SRM Full Stack Engineering Challenge
-            </p>
-            <h1 className="mt-3 text-4xl font-semibold tracking-normal text-neutral-950 sm:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-normal text-[#111418] sm:text-5xl">
               BFHL hierarchy inspector
             </h1>
           </div>
@@ -117,14 +114,14 @@ export default function Home() {
         <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <form
             onSubmit={handleSubmit}
-            className="flex min-h-[560px] flex-col rounded-xl border border-neutral-200 bg-white shadow-sm"
+            className="flex min-h-[560px] flex-col rounded-lg border border-[#d8dcdf] bg-white shadow-sm"
           >
-            <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
+            <div className="flex items-center justify-between border-b border-[#e3e6e8] px-5 py-4">
               <h2 className="text-lg font-semibold">Input</h2>
               <button
                 type="button"
                 onClick={() => setInput(sampleInput)}
-                className="h-9 rounded-lg border border-neutral-200 px-3 text-sm font-medium text-neutral-600 transition hover:bg-neutral-50"
+                className="h-9 rounded-md border border-[#cbd1d6] px-3 text-sm font-medium text-[#4b5563] transition hover:bg-[#f4f6f7]"
               >
                 Reset sample
               </button>
@@ -133,29 +130,29 @@ export default function Home() {
               value={input}
               onChange={(event) => setInput(event.target.value)}
               spellCheck={false}
-              className="min-h-0 flex-1 resize-none bg-neutral-50/50 p-5 font-mono text-sm leading-6 text-neutral-800 outline-none transition placeholder:text-neutral-400 focus:bg-white"
+              className="min-h-0 flex-1 resize-none bg-[#fafbfb] p-5 font-mono text-sm leading-6 text-[#24292f] outline-none transition placeholder:text-[#8b949e] focus:bg-white"
               placeholder="A->B&#10;A->C&#10;B->D"
             />
-            <div className="flex flex-col gap-3 border-t border-neutral-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-neutral-500">{parsedCount} entries queued</p>
+            <div className="flex flex-col gap-3 border-t border-[#e3e6e8] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-[#69727d]">{parsedCount} entries queued</p>
               <button
                 type="submit"
                 disabled={apiState.status === "loading"}
-                className="h-11 rounded-lg bg-neutral-900 px-5 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
+                className="h-11 rounded-md bg-[#2f3a45] px-5 text-sm font-semibold text-white transition hover:bg-[#1f2933] disabled:cursor-not-allowed disabled:bg-[#9aa3ad]"
               >
                 {apiState.status === "loading" ? "Processing..." : "Submit"}
               </button>
             </div>
           </form>
 
-          <section className="min-h-[560px] rounded-xl border border-neutral-200 bg-white shadow-sm">
-            <div className="border-b border-neutral-100 px-5 py-4">
+          <section className="min-h-[560px] rounded-lg border border-[#d8dcdf] bg-white shadow-sm">
+            <div className="border-b border-[#e3e6e8] px-5 py-4">
               <h2 className="text-lg font-semibold">Response</h2>
             </div>
             <div className="p-5">
               {apiState.status === "idle" && <EmptyState />}
               {apiState.status === "loading" && (
-                <div className="rounded-lg border border-neutral-200 bg-neutral-50/50 p-5 text-sm text-neutral-500">
+                <div className="rounded-lg border border-[#d8dcdf] bg-[#fafbfb] p-5 text-sm text-[#69727d]">
                   Processing hierarchy data...
                 </div>
               )}
@@ -173,9 +170,9 @@ export default function Home() {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="min-w-20 rounded-xl border border-neutral-200 bg-white px-3 py-2 shadow-sm">
-      <div className="text-xl font-semibold text-neutral-900">{value}</div>
-      <div className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-neutral-500">
+    <div className="min-w-20 rounded-lg border border-[#d8dcdf] bg-white px-3 py-2 shadow-sm">
+      <div className="text-xl font-semibold text-[#2f3a45]">{value}</div>
+      <div className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-[#69727d]">
         {label}
       </div>
     </div>
@@ -184,7 +181,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 function EmptyState() {
   return (
-    <div className="rounded-lg border border-dashed border-neutral-300 bg-neutral-50/50 p-5 text-sm text-neutral-500">
+    <div className="rounded-lg border border-dashed border-[#cbd1d6] bg-[#fafbfb] p-5 text-sm text-[#69727d]">
       No response yet.
     </div>
   );
@@ -192,7 +189,7 @@ function EmptyState() {
 
 function ErrorState({ message }: { message: string }) {
   return (
-    <div className="rounded-lg border border-red-200 bg-red-50 p-5 text-sm font-medium text-red-700">
+    <div className="rounded-lg border border-[#d6b9b5] bg-[#fbf6f5] p-5 text-sm font-medium text-[#8a3b34]">
       {message}
     </div>
   );
@@ -216,11 +213,11 @@ function ResponseView({ response }: { response: BfhlResponse }) {
       <DetailList title="Invalid entries" values={response.invalid_entries} />
       <DetailList title="Duplicate edges" values={response.duplicate_edges} />
 
-      <details className="rounded-lg border border-neutral-200 bg-neutral-50/50">
-        <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-neutral-800 hover:text-neutral-950">
+      <details className="rounded-lg border border-[#d8dcdf] bg-[#fafbfb]">
+        <summary className="cursor-pointer px-4 py-3 text-sm font-semibold">
           Raw JSON
         </summary>
-        <pre className="overflow-auto border-t border-neutral-200 p-4 text-xs leading-5 text-neutral-600">
+        <pre className="overflow-auto border-t border-[#e3e6e8] p-4 text-xs leading-5 text-[#4b5563]">
           {JSON.stringify(response, null, 2)}
         </pre>
       </details>
@@ -230,114 +227,121 @@ function ResponseView({ response }: { response: BfhlResponse }) {
 
 function SummaryItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-neutral-200 bg-neutral-50/50 p-4">
-      <div className="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500">
+    <div className="rounded-lg border border-[#d8dcdf] bg-[#fafbfb] p-4">
+      <div className="text-xs font-semibold uppercase tracking-[0.14em] text-[#69727d]">
         {label}
       </div>
-      <div className="mt-2 text-2xl font-semibold text-neutral-900">{value}</div>
+      <div className="mt-2 text-2xl font-semibold text-[#1f2328]">{value}</div>
     </div>
   );
 }
 
 function HierarchyCard({ hierarchy }: { hierarchy: Hierarchy }) {
   return (
-    <article className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-100 bg-neutral-50/50 px-5 py-4">
+    <article className="rounded-lg border border-[#d8dcdf] bg-white p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h3 className="text-base font-semibold text-neutral-900">Root {hierarchy.root}</h3>
-          <p className="text-sm text-neutral-500">
+          <h3 className="text-lg font-semibold">Root {hierarchy.root}</h3>
+          <p className="text-sm text-[#69727d]">
             {hierarchy.has_cycle ? "Cycle detected" : `Depth ${hierarchy.depth}`}
           </p>
         </div>
         <span
-          className={`rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${
+          className={`rounded-md px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${
             hierarchy.has_cycle
-              ? "bg-red-50 text-red-700 border border-red-200"
-              : "bg-neutral-100 text-neutral-700 border border-neutral-200"
+              ? "bg-[#fbf6f5] text-[#8a3b34]"
+              : "bg-[#eef1f3] text-[#38434f]"
           }`}
         >
           {hierarchy.has_cycle ? "Cycle" : "Tree"}
         </span>
       </div>
-      <div className="p-5">
+      <div className="mt-4 overflow-x-auto rounded-md border border-[#e3e6e8] bg-[#fafbfb] p-4">
         {hierarchy.has_cycle ? (
-          <p className="text-sm text-neutral-500">Tree omitted for cyclic groups.</p>
+          <p className="text-sm text-[#69727d]">Tree omitted for cyclic groups.</p>
         ) : (
-          <div className="overflow-auto py-1">
-            <TreeView tree={hierarchy.tree} />
-          </div>
+          <TreeView tree={hierarchy.tree} />
         )}
       </div>
     </article>
   );
 }
 
-function TreeView({ tree, isRoot = true }: { tree: Record<string, unknown>; isRoot?: boolean }) {
+function TreeView({ tree }: { tree: Record<string, unknown> }) {
   const entries = Object.entries(tree);
 
   if (entries.length === 0) {
-    return null;
+    return <span className="font-mono text-sm text-[#69727d]">{`{}`}</span>;
   }
 
   return (
-    <ul className={`flex flex-col gap-1 ${!isRoot ? "pl-1" : ""}`}>
-      {entries.map(([node, children], index) => {
-        const isLast = index === entries.length - 1;
-        const hasChildren = isRecord(children) && Object.keys(children).length > 0;
-
-        return (
-          <li key={node} className="relative flex flex-col items-start pt-1.5 pb-1.5">
-            {!isRoot && (
-              <>
-                {/* Horizontal Line to node */}
-                <div className="absolute left-[-16px] top-[22px] h-px w-4 bg-neutral-300" />
-                
-                {/* Vertical Line from parent */}
-                <div
-                  className={`absolute left-[-16px] top-0 w-px bg-neutral-300 ${
-                    isLast ? "h-[22px]" : "h-full"
-                  }`}
-                />
-              </>
-            )}
-
-            <div className="relative flex items-center gap-2">
-              <span className="flex min-w-[2rem] items-center justify-center rounded-lg border border-neutral-200 bg-white px-2.5 py-1 font-mono text-sm font-medium text-neutral-800 shadow-sm transition-colors hover:border-neutral-300 hover:bg-neutral-50">
-                {node}
-              </span>
-              {!hasChildren && (
-                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-neutral-400">
-                  leaf
-                </span>
-              )}
-            </div>
-            
-            {hasChildren && (
-              <div className={!isRoot ? "ml-[1.125rem]" : "ml-4"}>
-                <TreeView tree={children as Record<string, unknown>} isRoot={false} />
-              </div>
-            )}
-          </li>
-        );
-      })}
+    <ul className="min-w-max space-y-3">
+      {entries.map(([node, children]) => (
+        <TreeBranch key={node} childrenValue={children} isRoot node={node} />
+      ))}
     </ul>
+  );
+}
+
+function TreeBranch({
+  childrenValue,
+  isRoot = false,
+  node,
+}: {
+  childrenValue: unknown;
+  isRoot?: boolean;
+  node: string;
+}) {
+  const childEntries = isRecord(childrenValue) ? Object.entries(childrenValue) : [];
+
+  return (
+    <li className={`relative ${isRoot ? "" : "pl-6"}`}>
+      {!isRoot && <span className="absolute left-0 top-4 h-px w-4 bg-[#cbd1d6]" />}
+      <div className="flex items-center gap-3">
+        <span
+          className={`size-2 rounded-full ${isRoot ? "bg-[#2f3a45]" : "bg-[#9aa3ad]"}`}
+          aria-hidden="true"
+        />
+        <span className="flex min-w-9 items-center justify-center rounded-md border border-[#cbd1d6] bg-white px-2.5 py-1.5 font-mono text-sm font-semibold text-[#2f3a45] shadow-sm">
+          {node}
+        </span>
+        {childEntries.length === 0 && (
+          <span className="rounded-full border border-[#d8dcdf] bg-white px-2 py-0.5 text-xs font-medium text-[#69727d]">
+            leaf
+          </span>
+        )}
+      </div>
+      {childEntries.length > 0 && (
+        <div className="ml-[3px] mt-3 border-l border-[#cbd1d6] pl-4">
+          <ul className="space-y-3">
+            {childEntries.map(([childNode, nestedChildren]) => (
+              <TreeBranch
+                key={childNode}
+                childrenValue={nestedChildren}
+                node={childNode}
+              />
+            ))}
+          </ul>
+        </div>
+      )}
+    </li>
   );
 }
 
 function DetailList({ title, values }: { title: string; values: string[] }) {
   return (
     <section>
-      <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500">
+      <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-[#69727d]">
         {title}
       </h3>
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-2 flex flex-wrap gap-2">
         {values.length === 0 ? (
-          <span className="text-sm text-neutral-500">None</span>
+          <span className="text-sm text-[#69727d]">None</span>
         ) : (
           values.map((value) => (
             <span
               key={value}
-              className="rounded-lg border border-neutral-200 bg-neutral-50 px-2.5 py-1 font-mono text-sm text-neutral-700 shadow-sm"
+              className="rounded-md bg-[#eef1f3] px-3 py-1 font-mono text-sm text-[#4b5563]"
             >
               {value || "(empty)"}
             </span>
