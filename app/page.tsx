@@ -135,10 +135,10 @@ export default function Home() {
           </div>
         </header>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <div className="flex flex-col gap-6">
           <form
             onSubmit={handleSubmit}
-            className="flex min-h-[560px] flex-col rounded-lg border border-[#d8dcdf] bg-white shadow-sm"
+            className="flex flex-col rounded-lg border border-[#d8dcdf] bg-white shadow-sm"
           >
             <div className="flex items-center justify-between border-b border-[#e3e6e8] px-5 py-4">
               <h2 className="text-lg font-semibold">Input</h2>
@@ -154,7 +154,7 @@ export default function Home() {
               value={input}
               onChange={(event) => setInput(event.target.value)}
               spellCheck={false}
-              className="min-h-0 flex-1 resize-none bg-[#fafbfb] p-5 font-mono text-sm leading-6 text-[#24292f] outline-none transition placeholder:text-[#8b949e] focus:bg-white"
+              className="h-[180px] resize-none bg-[#fafbfb] p-5 font-mono text-sm leading-6 text-[#24292f] outline-none transition placeholder:text-[#8b949e] focus:bg-white sm:h-[220px]"
               placeholder="A->B&#10;A->C&#10;B->D"
             />
             <div className="flex flex-col gap-3 border-t border-[#e3e6e8] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
