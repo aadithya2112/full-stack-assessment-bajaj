@@ -137,9 +137,7 @@ export default function Home() {
               placeholder="A->B&#10;A->C&#10;B->D"
             />
             <div className="flex flex-col gap-3 border-t border-[#e6e0d6] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-[#716b60]">
-                Accepts newline, comma, or JSON-array input.
-              </p>
+              <p className="text-sm text-[#716b60]">{parsedCount} entries queued</p>
               <button
                 type="submit"
                 disabled={apiState.status === "loading"}
@@ -187,7 +185,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 function EmptyState() {
   return (
     <div className="rounded-lg border border-dashed border-[#cfc6b8] bg-[#fffdf9] p-5 text-sm text-[#716b60]">
-      Submit an edge list to inspect the generated hierarchies.
+      No response yet.
     </div>
   );
 }
