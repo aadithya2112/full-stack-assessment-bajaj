@@ -82,14 +82,14 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f4ee] text-[#22211f]">
+    <main className="min-h-screen bg-neutral-50 text-neutral-900">
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 py-8 sm:px-8 lg:px-10">
-        <header className="flex flex-col gap-4 border-b border-[#d8d2c8] pb-6 md:flex-row md:items-end md:justify-between">
+        <header className="flex flex-col gap-4 border-b border-neutral-200 pb-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#716b60]">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-neutral-500">
               SRM Full Stack Engineering Challenge
             </p>
-            <h1 className="mt-3 text-4xl font-semibold tracking-normal text-[#181714] sm:text-5xl">
+            <h1 className="mt-3 text-4xl font-semibold tracking-normal text-neutral-950 sm:text-5xl">
               BFHL hierarchy inspector
             </h1>
           </div>
@@ -117,14 +117,14 @@ export default function Home() {
         <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <form
             onSubmit={handleSubmit}
-            className="flex min-h-[560px] flex-col rounded-lg border border-[#d8d2c8] bg-white shadow-sm"
+            className="flex min-h-[560px] flex-col rounded-xl border border-neutral-200 bg-white shadow-sm"
           >
-            <div className="flex items-center justify-between border-b border-[#e6e0d6] px-5 py-4">
+            <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
               <h2 className="text-lg font-semibold">Input</h2>
               <button
                 type="button"
                 onClick={() => setInput(sampleInput)}
-                className="h-9 rounded-md border border-[#c7beb0] px-3 text-sm font-medium text-[#4a443b] transition hover:bg-[#f1ece4]"
+                className="h-9 rounded-lg border border-neutral-200 px-3 text-sm font-medium text-neutral-600 transition hover:bg-neutral-50"
               >
                 Reset sample
               </button>
@@ -133,29 +133,29 @@ export default function Home() {
               value={input}
               onChange={(event) => setInput(event.target.value)}
               spellCheck={false}
-              className="min-h-0 flex-1 resize-none bg-[#fffdf9] p-5 font-mono text-sm leading-6 text-[#25221d] outline-none transition placeholder:text-[#9a9285] focus:bg-white"
+              className="min-h-0 flex-1 resize-none bg-neutral-50/50 p-5 font-mono text-sm leading-6 text-neutral-800 outline-none transition placeholder:text-neutral-400 focus:bg-white"
               placeholder="A->B&#10;A->C&#10;B->D"
             />
-            <div className="flex flex-col gap-3 border-t border-[#e6e0d6] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-[#716b60]">{parsedCount} entries queued</p>
+            <div className="flex flex-col gap-3 border-t border-neutral-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-neutral-500">{parsedCount} entries queued</p>
               <button
                 type="submit"
                 disabled={apiState.status === "loading"}
-                className="h-11 rounded-md bg-[#1f6f68] px-5 text-sm font-semibold text-white transition hover:bg-[#195c56] disabled:cursor-not-allowed disabled:bg-[#98aaa6]"
+                className="h-11 rounded-lg bg-neutral-900 px-5 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
               >
                 {apiState.status === "loading" ? "Processing..." : "Submit"}
               </button>
             </div>
           </form>
 
-          <section className="min-h-[560px] rounded-lg border border-[#d8d2c8] bg-white shadow-sm">
-            <div className="border-b border-[#e6e0d6] px-5 py-4">
+          <section className="min-h-[560px] rounded-xl border border-neutral-200 bg-white shadow-sm">
+            <div className="border-b border-neutral-100 px-5 py-4">
               <h2 className="text-lg font-semibold">Response</h2>
             </div>
             <div className="p-5">
               {apiState.status === "idle" && <EmptyState />}
               {apiState.status === "loading" && (
-                <div className="rounded-lg border border-[#d8d2c8] bg-[#fffdf9] p-5 text-sm text-[#716b60]">
+                <div className="rounded-lg border border-neutral-200 bg-neutral-50/50 p-5 text-sm text-neutral-500">
                   Processing hierarchy data...
                 </div>
               )}
@@ -173,9 +173,9 @@ export default function Home() {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="min-w-20 rounded-lg border border-[#d8d2c8] bg-white px-3 py-2 shadow-sm">
-      <div className="text-xl font-semibold text-[#1f6f68]">{value}</div>
-      <div className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-[#716b60]">
+    <div className="min-w-20 rounded-xl border border-neutral-200 bg-white px-3 py-2 shadow-sm">
+      <div className="text-xl font-semibold text-neutral-900">{value}</div>
+      <div className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-neutral-500">
         {label}
       </div>
     </div>
@@ -184,7 +184,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 function EmptyState() {
   return (
-    <div className="rounded-lg border border-dashed border-[#cfc6b8] bg-[#fffdf9] p-5 text-sm text-[#716b60]">
+    <div className="rounded-lg border border-dashed border-neutral-300 bg-neutral-50/50 p-5 text-sm text-neutral-500">
       No response yet.
     </div>
   );
@@ -192,7 +192,7 @@ function EmptyState() {
 
 function ErrorState({ message }: { message: string }) {
   return (
-    <div className="rounded-lg border border-[#e0b2a9] bg-[#fff8f5] p-5 text-sm font-medium text-[#9f3d2d]">
+    <div className="rounded-lg border border-red-200 bg-red-50 p-5 text-sm font-medium text-red-700">
       {message}
     </div>
   );
@@ -216,11 +216,11 @@ function ResponseView({ response }: { response: BfhlResponse }) {
       <DetailList title="Invalid entries" values={response.invalid_entries} />
       <DetailList title="Duplicate edges" values={response.duplicate_edges} />
 
-      <details className="rounded-lg border border-[#d8d2c8] bg-[#fffdf9]">
-        <summary className="cursor-pointer px-4 py-3 text-sm font-semibold">
+      <details className="rounded-lg border border-neutral-200 bg-neutral-50/50">
+        <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-neutral-800 hover:text-neutral-950">
           Raw JSON
         </summary>
-        <pre className="overflow-auto border-t border-[#e6e0d6] p-4 text-xs leading-5 text-[#4a443b]">
+        <pre className="overflow-auto border-t border-neutral-200 p-4 text-xs leading-5 text-neutral-600">
           {JSON.stringify(response, null, 2)}
         </pre>
       </details>
@@ -230,74 +230,96 @@ function ResponseView({ response }: { response: BfhlResponse }) {
 
 function SummaryItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-[#d8d2c8] bg-[#fffdf9] p-4">
-      <div className="text-xs font-semibold uppercase tracking-[0.14em] text-[#716b60]">
+    <div className="rounded-xl border border-neutral-200 bg-neutral-50/50 p-4">
+      <div className="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500">
         {label}
       </div>
-      <div className="mt-2 text-2xl font-semibold text-[#22211f]">{value}</div>
+      <div className="mt-2 text-2xl font-semibold text-neutral-900">{value}</div>
     </div>
   );
 }
 
 function HierarchyCard({ hierarchy }: { hierarchy: Hierarchy }) {
   return (
-    <article className="rounded-lg border border-[#d8d2c8] bg-white p-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <article className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-100 bg-neutral-50/50 px-5 py-4">
         <div>
-          <h3 className="text-lg font-semibold">Root {hierarchy.root}</h3>
-          <p className="text-sm text-[#716b60]">
+          <h3 className="text-base font-semibold text-neutral-900">Root {hierarchy.root}</h3>
+          <p className="text-sm text-neutral-500">
             {hierarchy.has_cycle ? "Cycle detected" : `Depth ${hierarchy.depth}`}
           </p>
         </div>
         <span
-          className={`rounded-md px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${
+          className={`rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${
             hierarchy.has_cycle
-              ? "bg-[#fff0ea] text-[#9f3d2d]"
-              : "bg-[#eaf5f1] text-[#1f6f68]"
+              ? "bg-red-50 text-red-700 border border-red-200"
+              : "bg-neutral-100 text-neutral-700 border border-neutral-200"
           }`}
         >
           {hierarchy.has_cycle ? "Cycle" : "Tree"}
         </span>
       </div>
-      <div className="mt-4 rounded-md bg-[#f7f4ee] p-4">
+      <div className="p-5">
         {hierarchy.has_cycle ? (
-          <p className="text-sm text-[#716b60]">Tree omitted for cyclic groups.</p>
+          <p className="text-sm text-neutral-500">Tree omitted for cyclic groups.</p>
         ) : (
-          <TreeView tree={hierarchy.tree} />
+          <div className="overflow-auto py-1">
+            <TreeView tree={hierarchy.tree} />
+          </div>
         )}
       </div>
     </article>
   );
 }
 
-function TreeView({ tree }: { tree: Record<string, unknown> }) {
+function TreeView({ tree, isRoot = true }: { tree: Record<string, unknown>; isRoot?: boolean }) {
   const entries = Object.entries(tree);
 
   if (entries.length === 0) {
-    return <span className="font-mono text-sm text-[#716b60]">{`{}`}</span>;
+    return null;
   }
 
   return (
-    <ul className="space-y-2">
-      {entries.map(([node, children]) => (
-        <li key={node}>
-          <div className="flex items-center gap-2">
-            <span className="flex size-8 items-center justify-center rounded-md bg-white font-mono text-sm font-semibold text-[#1f6f68] shadow-sm">
-              {node}
-            </span>
-            {isRecord(children) && Object.keys(children).length === 0 && (
-              <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#716b60]">
-                leaf
-              </span>
+    <ul className={`flex flex-col gap-1 ${!isRoot ? "pl-1" : ""}`}>
+      {entries.map(([node, children], index) => {
+        const isLast = index === entries.length - 1;
+        const hasChildren = isRecord(children) && Object.keys(children).length > 0;
+
+        return (
+          <li key={node} className="relative flex flex-col items-start pt-1.5 pb-1.5">
+            {!isRoot && (
+              <>
+                {/* Horizontal Line to node */}
+                <div className="absolute left-[-16px] top-[22px] h-px w-4 bg-neutral-300" />
+                
+                {/* Vertical Line from parent */}
+                <div
+                  className={`absolute left-[-16px] top-0 w-px bg-neutral-300 ${
+                    isLast ? "h-[22px]" : "h-full"
+                  }`}
+                />
+              </>
             )}
-          </div>
-          {isRecord(children) && Object.keys(children).length > 0 && (
-            <div className="ml-4 mt-2 border-l border-[#cfc6b8] pl-4">
-              <TreeView tree={children} />
+
+            <div className="relative flex items-center gap-2">
+              <span className="flex min-w-[2rem] items-center justify-center rounded-lg border border-neutral-200 bg-white px-2.5 py-1 font-mono text-sm font-medium text-neutral-800 shadow-sm transition-colors hover:border-neutral-300 hover:bg-neutral-50">
+                {node}
+              </span>
+              {!hasChildren && (
+                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-neutral-400">
+                  leaf
+                </span>
+              )}
             </div>
-          )}
-        </li>
-      ))}
+            
+            {hasChildren && (
+              <div className={!isRoot ? "ml-[1.125rem]" : "ml-4"}>
+                <TreeView tree={children as Record<string, unknown>} isRoot={false} />
+              </div>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -305,17 +327,17 @@ function TreeView({ tree }: { tree: Record<string, unknown> }) {
 function DetailList({ title, values }: { title: string; values: string[] }) {
   return (
     <section>
-      <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-[#716b60]">
+      <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-neutral-500">
         {title}
       </h3>
-      <div className="mt-2 flex flex-wrap gap-2">
+      <div className="mt-3 flex flex-wrap gap-2">
         {values.length === 0 ? (
-          <span className="text-sm text-[#716b60]">None</span>
+          <span className="text-sm text-neutral-500">None</span>
         ) : (
           values.map((value) => (
             <span
               key={value}
-              className="rounded-md bg-[#f7f4ee] px-3 py-1 font-mono text-sm text-[#4a443b]"
+              className="rounded-lg border border-neutral-200 bg-neutral-50 px-2.5 py-1 font-mono text-sm text-neutral-700 shadow-sm"
             >
               {value || "(empty)"}
             </span>
