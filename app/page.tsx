@@ -1,7 +1,31 @@
 "use client";
 
+import {
+  Background,
+  BackgroundVariant,
+  Controls,
+  MarkerType,
+  MiniMap,
+  Position,
+  ReactFlow,
+  type Edge,
+  type Node,
+} from "@xyflow/react";
 import { FormEvent, useMemo, useState } from "react";
 import type { BfhlResponse, Hierarchy } from "@/lib/bfhl";
+
+type HierarchyNodeData = {
+  label: string;
+  role: "root" | "branch" | "leaf";
+};
+
+type HierarchyFlowNode = Node<HierarchyNodeData>;
+type HierarchyFlowEdge = Edge;
+
+const nodeWidth = 84;
+const nodeHeight = 42;
+const columnGap = 180;
+const rowGap = 86;
 
 const sampleInput = `A->B
 A->C
@@ -256,9 +280,9 @@ function HierarchyCard({ hierarchy }: { hierarchy: Hierarchy }) {
           {hierarchy.has_cycle ? "Cycle" : "Tree"}
         </span>
       </div>
-      <div className="mt-4 overflow-x-auto rounded-md border border-[#e3e6e8] bg-[#fafbfb] p-4">
+      <div className="mt-4 rounded-md border border-[#e3e6e8] bg-[#fafbfb]">
         {hierarchy.has_cycle ? (
-          <p className="text-sm text-[#69727d]">Tree omitted for cyclic groups.</p>
+          <p className="p-4 text-sm text-[#69727d]">Tree omitted for cyclic groups.</p>
         ) : (
           <TreeView tree={hierarchy.tree} />
         )}
@@ -268,63 +292,50 @@ function HierarchyCard({ hierarchy }: { hierarchy: Hierarchy }) {
 }
 
 function TreeView({ tree }: { tree: Record<string, unknown> }) {
-  const entries = Object.entries(tree);
+  const { nodes, edges } = useMemo(() => buildFlowElements(tree), [tree]);
 
-  if (entries.length === 0) {
-    return <span className="font-mono text-sm text-[#69727d]">{`{}`}</span>;
+  if (nodes.length === 0) {
+    return <span className="block p-4 font-mono text-sm text-[#69727d]">{`{}`}</span>;
   }
 
   return (
-    <ul className="min-w-max space-y-3">
-      {entries.map(([node, children]) => (
-        <TreeBranch key={node} childrenValue={children} isRoot node={node} />
-      ))}
-    </ul>
-  );
-}
-
-function TreeBranch({
-  childrenValue,
-  isRoot = false,
-  node,
-}: {
-  childrenValue: unknown;
-  isRoot?: boolean;
-  node: string;
-}) {
-  const childEntries = isRecord(childrenValue) ? Object.entries(childrenValue) : [];
-
-  return (
-    <li className={`relative ${isRoot ? "" : "pl-6"}`}>
-      {!isRoot && <span className="absolute left-0 top-4 h-px w-4 bg-[#cbd1d6]" />}
-      <div className="flex items-center gap-3">
-        <span
-          className={`size-2 rounded-full ${isRoot ? "bg-[#2f3a45]" : "bg-[#9aa3ad]"}`}
-          aria-hidden="true"
+    <div className="h-[360px] overflow-hidden rounded-md">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        fitView
+        fitViewOptions={{ padding: 0.22 }}
+        minZoom={0.25}
+        maxZoom={1.6}
+        nodesDraggable={false}
+        nodesConnectable={false}
+        elementsSelectable={false}
+        panOnDrag
+        panOnScroll
+        zoomOnPinch
+        zoomOnScroll
+        zoomOnDoubleClick={false}
+        proOptions={{ hideAttribution: true }}
+        colorMode="light"
+      >
+        <Background color="#d8dcdf" gap={20} size={1.2} variant={BackgroundVariant.Dots} />
+        <Controls
+          className="!border !border-[#d8dcdf] !bg-white !shadow-sm"
+          fitViewOptions={{ padding: 0.22 }}
+          showInteractive={false}
         />
-        <span className="flex min-w-9 items-center justify-center rounded-md border border-[#cbd1d6] bg-white px-2.5 py-1.5 font-mono text-sm font-semibold text-[#2f3a45] shadow-sm">
-          {node}
-        </span>
-        {childEntries.length === 0 && (
-          <span className="rounded-full border border-[#d8dcdf] bg-white px-2 py-0.5 text-xs font-medium text-[#69727d]">
-            leaf
-          </span>
+        {nodes.length >= 10 && (
+          <MiniMap
+            className="!border !border-[#d8dcdf] !bg-white !shadow-sm"
+            nodeColor={(node) => getMiniMapNodeColor(node as HierarchyFlowNode)}
+            nodeStrokeColor="#ffffff"
+            nodeBorderRadius={6}
+            pannable
+            zoomable
+          />
         )}
-      </div>
-      {childEntries.length > 0 && (
-        <div className="ml-[3px] mt-3 border-l border-[#cbd1d6] pl-4">
-          <ul className="space-y-3">
-            {childEntries.map(([childNode, nestedChildren]) => (
-              <TreeBranch
-                key={childNode}
-                childrenValue={nestedChildren}
-                node={childNode}
-              />
-            ))}
-          </ul>
-        </div>
-      )}
-    </li>
+      </ReactFlow>
+    </div>
   );
 }
 
@@ -377,4 +388,147 @@ function parseInput(input: string) {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function buildFlowElements(tree: Record<string, unknown>): {
+  nodes: HierarchyFlowNode[];
+  edges: HierarchyFlowEdge[];
+} {
+  const rootEntries = getSortedEntries(tree);
+
+  if (rootEntries.length === 0) {
+    return { nodes: [], edges: [] };
+  }
+
+  const nodes: HierarchyFlowNode[] = [];
+  const edges: HierarchyFlowEdge[] = [];
+  let leafCursor = 0;
+
+  function visit(
+    label: string,
+    childrenValue: unknown,
+    depth: number,
+    path: string[],
+    parentId?: string,
+  ): number {
+    const id = path.join(".");
+    const childEntries = getSortedEntries(childrenValue);
+    const childYPositions = childEntries.map(([childLabel, nestedChildren], index) =>
+      visit(childLabel, nestedChildren, depth + 1, [...path, `${index}-${childLabel}`], id),
+    );
+    const y =
+      childYPositions.length === 0
+        ? leafCursor++ * rowGap
+        : (childYPositions[0] + childYPositions[childYPositions.length - 1]) / 2;
+    const role: HierarchyNodeData["role"] =
+      parentId === undefined ? "root" : childEntries.length === 0 ? "leaf" : "branch";
+
+    nodes.push({
+      id,
+      data: { label, role },
+      position: { x: depth * columnGap, y },
+      sourcePosition: Position.Right,
+      targetPosition: Position.Left,
+      selectable: false,
+      draggable: false,
+      connectable: false,
+      style: getNodeStyle(role),
+      width: nodeWidth,
+      height: nodeHeight,
+    });
+
+    if (parentId) {
+      edges.push({
+        id: `${parentId}->${id}`,
+        source: parentId,
+        target: id,
+        type: "smoothstep",
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color: "#87919c",
+          width: 16,
+          height: 16,
+        },
+        selectable: false,
+        style: {
+          stroke: "#87919c",
+          strokeWidth: 1.8,
+        },
+      });
+    }
+
+    return y;
+  }
+
+  rootEntries.forEach(([label, childrenValue], index) => {
+    visit(label, childrenValue, 0, [`${index}-${label}`]);
+    leafCursor += 0.6;
+  });
+
+  return { nodes, edges };
+}
+
+function getSortedEntries(value: unknown) {
+  if (!isRecord(value)) {
+    return [];
+  }
+
+  return Object.entries(value).sort(([left], [right]) => left.localeCompare(right));
+}
+
+function getNodeStyle(role: HierarchyNodeData["role"]): HierarchyFlowNode["style"] {
+  const sharedStyle = {
+    width: nodeWidth,
+    height: nodeHeight,
+    borderRadius: 7,
+    alignItems: "center",
+    borderWidth: 1,
+    borderStyle: "solid",
+    display: "flex",
+    fontFamily: "var(--font-geist-mono), monospace",
+    fontSize: 14,
+    fontWeight: 700,
+    justifyContent: "center",
+    padding: "0 12px",
+    textAlign: "center" as const,
+  };
+
+  if (role === "root") {
+    return {
+      ...sharedStyle,
+      background: "#2f3a45",
+      borderColor: "#2f3a45",
+      boxShadow: "0 8px 18px rgba(31, 35, 40, 0.16)",
+      color: "#ffffff",
+    };
+  }
+
+  if (role === "branch") {
+    return {
+      ...sharedStyle,
+      background: "#ffffff",
+      borderColor: "#aeb7c1",
+      boxShadow: "0 5px 14px rgba(31, 35, 40, 0.1)",
+      color: "#2f3a45",
+    };
+  }
+
+  return {
+    ...sharedStyle,
+    background: "#eef1f3",
+    borderColor: "#cbd1d6",
+    color: "#4b5563",
+  };
+}
+
+function getMiniMapNodeColor(node: HierarchyFlowNode) {
+  if (node.data.role === "root") {
+    return "#2f3a45";
+  }
+
+  if (node.data.role === "branch") {
+    return "#aeb7c1";
+  }
+
+  return "#d8dcdf";
 }
